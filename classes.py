@@ -6,14 +6,7 @@ class Requests:
 
     def get_json(self, category):
         self.category = category
-        # url = 'https://fr.openfoodfacts.org/category/{}.json&lc=fr'
-        # r = requests.get(url.format(self.category))
-        #
-        # #load json
-        # json = r.json()
-
-
-
+    
         payload = {'action': 'process',
                    'tagtype_0': 'categories',
                    'tag_contains_0': 'contains',
@@ -41,7 +34,6 @@ class JsonToList:
         JsonToList._count += 1
         self.data = data
 
-        
 
         columns = ['code', 'brands', 'product_name',
                    'nutrition_grade_fr','stores',

@@ -17,6 +17,21 @@ class MysqlDB:
                                          charset='utf8',
                                          cursorclass=pymysql.cursors.DictCursor)
 
+    def check_db(self):
+
+        self.connect()
+        try:
+            with self.connection.cursor() as cursor:
+                sql = 'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = %s'
+                cursor.execute(sql,('Openfoodfacts'))
+                db = cursor.fetchone()
+
+        finally:
+            self.connection.close()
+
+        return db
+
+
     def create_db(self):
 
         self.connect()
@@ -78,7 +93,6 @@ class MysqlDB:
 
                     cursor.execute(sql, (category_name))
                     self.connection.commit()
-
         finally:
             self.connection.close()
 
@@ -103,6 +117,32 @@ class MysqlDB:
 
                     cursor.execute(sql,(list(product.values())))
                     self.connection.commit()
+        finally:
+            self.connection.close()
 
+    def fetch_categoies(self):
+
+        self.connect()
+
+        try:
+            with self.connection.cursor() as cursor:
+                sql = 'select * from openfoodfacts.cat'
+                cursor.execute(sql)
+                return cursor.fetchall()
+
+        finally:
+            self.connection.close()
+
+    def fetch_products(self, cat_id):
+        self.cat_id = cat_id
+        self.connect()
+
+        try:
+            with self.connection.cursor() as cursor:
+                sql = 'SELECT `id`, `product_name` FROM openfoodfacts.products WHERE `cat_id`=%s'
+                cursor.execute(sql,(self.cat_id))
+                list = cursor.fetchall()
+
+                return list
         finally:
             self.connection.close()
