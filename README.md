@@ -1,7 +1,10 @@
 # Pur Beurre
 
-Pur Beuure recommends healthier food substitutes by informing users with the nutrition score of products from [fr.openfoodfact.org](https://fr.openfoodfacts.org/)
+Pur Beuure helps users to make healthier food choices by
+recommending foods with higher nutrition score.
 
 ## Prerequisites
-- python3
-- MySQL
+- python 3
+- PyMysql 0.8.1
+- requests 2.11.1
+- MySQL 5.x (MySQL 8 does not fucntion properly with PyMysql)
