@@ -27,10 +27,3 @@ class Requests:
         address = 'https://fr.openfoodfacts.org/cgi/search.pl'
         r = requests.get(address, params=payload)
         return r.json()
-
-j=Requests()
-cat=j.get_json('pizza')
-
-f = open('json.txt', 'w', encoding='utf-8')
-f.write(str(cat))
-f.close
