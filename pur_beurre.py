@@ -11,7 +11,6 @@ import sys
 user_answer = None
 menu = 'home'
 
-
 print('\nMySql Server Log-in:')
 user = input('user: ')
 password = getpass.getpass()
@@ -23,9 +22,8 @@ navigate = Menu()
 if mysql.check_db() == None:
     print('\ndownloading data....')
 
-    categories = sorted(['chocolate','pizza','pain','pâte à tartiner',
-                        'yaourts', 'Biscuits et gâteaux'])
-
+    categories = sorted(['chocolate', 'pizza', 'pain', 'pâte à tartiner',
+                         'yaourts', 'Biscuits et gâteaux'])
 
     r = Requests()
     convert = JsonToList()
@@ -39,16 +37,17 @@ if mysql.check_db() == None:
 
     all_products = convert.data_extracted
 
-
     mysql.create_db()
     # Insert list into DB table categories
     mysql.insert_categories(categories)
-    #insert dict into DB table products
+    # insert dict into DB table products
     mysql.insert_products(all_products)
+# asks user for an input
+
 
 def user_input():
 
-    answer =  input('Entrez votre choix >>>')
+    answer = input('Entrez votre choix >>>')
     answer = answer.lower()
     try:
         answer = int(answer)
@@ -61,8 +60,9 @@ def user_input():
 
     return answer
 
-while True:
 
+while True:
+    # Home screen
     if menu == 'home':
         product_id = None
         cat_id = None
@@ -81,7 +81,7 @@ while True:
                     break
                 elif user_input == 'home':
                     break
-
+    # Catetory screen
     if menu == 'categories':
         cat_fetched = mysql.fetch_categoies()
         navigate.categories(cat_fetched)
@@ -99,8 +99,7 @@ while True:
             elif user_answer == 'home':
                 menu = 'home'
                 break
-
-
+    # My food list screen
     if menu == 'myfoods':
         saved_foods = mysql.fetch_saved_foods()
         navigate.my_foods(saved_foods)
@@ -121,7 +120,7 @@ while True:
             elif user_answer == 'home':
                 menu = 'home'
                 break
-
+    # Product list screen
     if menu == 'product_list':
         products = mysql.fetch_products(cat_id)
         navigate.product_list(products)
@@ -141,7 +140,7 @@ while True:
             elif user_answer == 'home':
                 menu = 'home'
                 break
-
+    # Display product info and subsitutes
     if menu == 'product_info':
         info = mysql.fetch_product_info(product_id)
         subs = mysql.fetch_susbstituts(product_id, cat_id)

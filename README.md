@@ -15,9 +15,10 @@ This is a project number 05 of Python developer course from
 - MySQL 5.7
 
 ### Installing
-Running under a vertual environment is recommended.
+Running under a virtual environment is recommended.
 
 1. Connect to MySQL and grant privileges.
+   Do not create database yourself. Pur beurre will create one for you.
 ```Mysql
 GRANT ALL ON openfoodfacts.* TO 'user'@'localhost';
 ```
