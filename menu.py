@@ -6,7 +6,7 @@ import textwrap
 wrapper = textwrap.TextWrapper(width=70, initial_indent='\t',
                                subsequent_indent='\t')
 
-sub = textwrap.TextWrapper(width=60)
+sub = textwrap.TextWrapper(width=50, subsequent_indent='    ')
 
 
 class Menu():
@@ -77,11 +77,18 @@ class Menu():
         print('\n------------------------------------------------------------')
 
         print('\nSubstituts :\n')
-
+        line_length = 50
         for item in self.subs_fetched:
             menu = '{} - {}'.format(item['brands'], item['product_name'])
-            print('{0:>2}. {1:<50} Score : {2}'.format(
-                item['num'], menu, item['nutrition_grade_fr']))
+            menu = sub.fill(menu)
+            curr_length = len(menu)
+            lastline = sub.wrap(menu)
+            space = 0
+            if len(lastline) > 1:
+                if len(lastline[-1]) < line_length:
+                    space = line_length - len(lastline[-1]) + 4
+            print('{:>2}. {:<50}{} Score : {}'.format(
+                item['num'], menu, " "*space, item['nutrition_grade_fr']))
 
     def save(self):
 
