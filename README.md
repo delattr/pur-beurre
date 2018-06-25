@@ -33,3 +33,7 @@ pip install -r requirements.txt
 
 ## Supported Language
 French
+
+## Version
+v 0.1.0
+[SemVer](https://semver.org/) is used for versioning.
