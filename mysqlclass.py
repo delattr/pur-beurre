@@ -88,8 +88,11 @@ class MysqlDB:
             with self.connection.cursor() as cursor:
                 sql = ('CREATE TABLE IF NOT EXISTS Openfoodfacts.My_foods ('
                        'id SMALLINT UNSIGNED AUTO_INCREMENT,'
-                       'product_id SMALLINT UNSIGNED UNIQUE,'
+                       'sub_id SMALLINT UNSIGNED UNIQUE,'
+                       'product_id SMALLINT UNSIGNED, '
                        'PRIMARY KEY(id),'
+                       'CONSTRAINT fk_sub_id FOREIGN KEY (product_id)'
+                       'REFERENCES Openfoodfacts.Products(id),'
                        'CONSTRAINT fk_product_id FOREIGN KEY (product_id)'
                        'REFERENCES Openfoodfacts.Products(id)'
                        ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4')
@@ -215,21 +218,27 @@ class MysqlDB:
             self.connection.close()
     # Insert product selected into my_foods table
 
-    def save_product(self, product_id):
+    def save_product(self, sub_id, product_id):
+        self.sub_id = sub_id
         self.product_id = product_id
         self.connect()
 
         try:
-            with self.connection.cursor() as cursor:
-                sql = 'INSERT INTO Openfoodfacts.my_foods (product_id) VALUES (%s)'
-                cursor.execute(sql, (self.product_id))
-                self.connection.commit()
-                message = 'Produit enregistré.'
-                return message
 
-        except:
-            message = 'Ce produit était dèja enregistré.'
-            return message
+            with self.connection.cursor() as cursor:
+                sql = 'SELECT EXISTS(SELECT 1 FROM Openfoodfacts.my_foods WHERE sub_id=%s) AS check_id'
+                cursor.execute(sql, (self.sub_id))
+                data_check = cursor.fetchall()
+                if data_check[0]['check_id'] == 1:
+                    return 'Ce produit déjà existe dans la base de donées'
+                else:
+                    with self.connection.cursor() as cursor:
+                        sql = 'INSERT INTO Openfoodfacts.my_foods (sub_id, product_id) VALUES (%s,%s)'
+                        cursor.execute(sql, (self.sub_id, self.product_id))
+                        self.connection.commit()
+                        message = 'Produit enregistré.'
+                        return message
+
         finally:
             self.connection.close()
     # INNER JOIN my_foods and products table
@@ -241,10 +250,10 @@ class MysqlDB:
         try:
             with self.connection.cursor() as cursor:
 
-                sql = ('SELECT m.id, m.product_id, p.brands, p.product_name, '
+                sql = ('SELECT m.id, m.product_id, m.sub_id, p.brands, p.product_name, '
                        'p.cat_id  FROM Openfoodfacts.my_foods AS m '
                        'INNER JOIN Openfoodfacts.Products AS p '
-                       'ON m.product_id=p.id ORDER BY m.id')
+                       'ON m.sub_id=p.id ORDER BY m.id')
                 cursor.execute(sql)
                 result = cursor.fetchall()
                 return result

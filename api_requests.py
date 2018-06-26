@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import requests
-import json
-import pprint
+
 
 class Requests:
 
@@ -17,12 +16,10 @@ class Requests:
                    'tag_0': self.category,
                    'tagtype_1': 'countries',
                    'tag_contains_1': 'contains',
-                   'tag_1' :'france',
-                   'sort_by' : 'unique_scans_n',
-                   'page_size':100,
+                   'tag_1': 'france',
+                   'sort_by': 'unique_scans_n',
+                   'page_size': 100,
                    'json': 1}
-
-
 
         address = 'https://fr.openfoodfacts.org/cgi/search.pl'
         r = requests.get(address, params=payload)
