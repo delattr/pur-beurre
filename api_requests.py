@@ -4,9 +4,15 @@ import requests
 
 
 class Requests:
+    """
+    Get Json from openfoodfacts.org and extracts product info from the json"""
 
-    def get_json(self, category):
+    def __init__(self):
+        self.all_products = []
+
+    def get_json(self, category, cat_id):
         self.category = category
+        self.cat_id = cat_id
 
         payload = {'action': 'process',
                    'fields': 'code,brands,product_name,nutrition_grade_fr,\
@@ -23,4 +29,10 @@ class Requests:
 
         address = 'https://fr.openfoodfacts.org/cgi/search.pl'
         r = requests.get(address, params=payload)
-        return r.json()
+        data = r.json()
+        # Extract porduct info from list
+        products = data['products']
+
+        for item in products:
+            item['cat_id'] = self.cat_id
+            self.all_products.append(item)

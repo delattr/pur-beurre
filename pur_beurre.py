@@ -35,11 +35,10 @@ if mysql.check_db() == None:
             for category in categories:
 
                 # Convert json to an object
-                product_data = r.get_json(category)
-                # Extract data needed from the object
-                convert.extract_data(product_data)
+                r.get_json(category, (categories.index(category) + 1))
 
-                all_products = convert.data_extracted
+                all_products = r.all_products
+
             # Create database and tables
             mysql.create_db()
             # Insert list into DB table categories
@@ -176,11 +175,6 @@ while True:
             user_answer = user_input()
 
             if type(user_answer) == int:
-                # if user_answer == 0:
-                #     save = navigate.save()
-                    # if save == True:
-                    #     message = mysql.save_product(product_id, product_chosen)
-                    #     print(message)
                 if user_answer > 0:
                     if user_answer <= len(subs):
                         for i in subs:
