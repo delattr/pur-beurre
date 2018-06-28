@@ -35,5 +35,7 @@ pip install -r requirements.txt
 French
 
 ## Version
+v 0.1.1
+- displays the substitut food and the replaced food at the same time when looking up the foods saved.
+
 v 0.1.0
-[SemVer](https://semver.org/) is used for versioning.
