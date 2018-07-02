@@ -4,7 +4,6 @@
 import getpass
 from api_requests import *
 from mysqlclass import *
-from convert import *
 from menu import *
 import sys
 
@@ -30,7 +29,6 @@ if mysql.check_db() == None:
                                  'yaourts', 'Biscuits et gâteaux'])
 
             r = Requests()
-            convert = Extract()
 
             for category in categories:
 
