@@ -3,4 +3,4 @@ chardet==3.0.4
 idna==2.6
 PyMySQL==0.8.1
 requests==2.11.1
-urllib3==1.22
+urllib3==1.24.2
